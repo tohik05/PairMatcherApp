@@ -1,5 +1,6 @@
 package com.andersen.orange.user.service;
 
+import com.andersen.orange.user.dto.UserCreateDto;
 import com.andersen.orange.user.dto.UserRequestDto;
 import com.andersen.orange.user.dto.UserResponseDto;
 import com.andersen.orange.user.model.Teams;
@@ -13,13 +14,19 @@ public class UserMapper {
         return User.builder()
                 .name(user.getName())
                 .lastname(user.getLastname())
+                .build();
+    }
+
+    public User mapToEntity(UserCreateDto user){
+        return User.builder()
+                .name(user.getName())
+                .lastname(user.getLastname())
                 .team(Teams.valueOf(user.getTeam()))
                 .build();
     }
 
     public UserResponseDto mapToResponseDto(User user) {
         return UserResponseDto.builder()
-                .id(user.getId())
                 .name(user.getName())
                 .lastname(user.getLastname())
                 .team(String.valueOf(user.getTeam()))
