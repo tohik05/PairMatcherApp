@@ -18,7 +18,6 @@ public class PairController {
     public PairController(PairMatcherAlgorithm pairMatchers) {
         this.pairMatchers = pairMatchers;
     }
-
     @PostMapping
     public List<Pair> createPairs(@RequestBody List<User> users) {
        return pairMatchers.createPairs(users);
