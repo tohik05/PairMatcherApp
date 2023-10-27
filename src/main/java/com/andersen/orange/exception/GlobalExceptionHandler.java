@@ -19,4 +19,11 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.NOT_FOUND)
                 .body(errorResponse);
     }
+    @ExceptionHandler(TeamHasAlreadyExistException.class)
+    public ResponseEntity<ErrorResponse> TeamHasAlreadyExistHandler(TeamHasAlreadyExistException exception) {
+        final ErrorResponse errorResponse = new ErrorResponse(exception.getMessage(), LocalDateTime.now());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errorResponse);
+    }
 }

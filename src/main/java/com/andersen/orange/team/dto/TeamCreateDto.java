@@ -1,4 +1,4 @@
-package com.andersen.orange.user.dto;
+package com.andersen.orange.team.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRequestDto {
-    private Long id;
+public class TeamCreateDto {
     private String name;
-    private String lastname;
 }
