@@ -1,25 +1,16 @@
 package com.andersen.orange.user.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.andersen.orange.pair.model.Pair;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 @Builder
-@EqualsAndHashCode
 @Entity
 @Table(name = "users")
 public class User {
@@ -36,4 +27,6 @@ public class User {
     private Teams team;
     @Column(name = "is_Deleted")
     private boolean isDeleted;
+    @OneToMany(mappedBy = "user")
+    private List<Pair> pairs;
 }
