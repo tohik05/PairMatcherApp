@@ -26,7 +26,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(value = {"", "/"})
+    @GetMapping
     public List<UserResponseDto> getAll(){
         return userService.getAll();
     }
@@ -36,7 +36,7 @@ public class UserController {
         return userService.getById(id);
     }
 
-    @PostMapping(value = {"", "/"})
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserResponseDto create(@RequestBody UserCreateDto user){
         return userService.create(user);

@@ -8,6 +8,8 @@ import com.andersen.orange.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
+
 @Component
 public class UserMapper {
     private final TeamRepository teamRepository;
@@ -19,8 +21,11 @@ public class UserMapper {
 
     public User mapToEntity(UserRequestDto user){
         return User.builder()
+                .id(user.getId())
                 .name(user.getName())
                 .lastname(user.getLastname())
+                .team(teamRepository.findByNameIgnoreCase(user.getTeam())
+                        .orElseThrow(() -> new EntityNotFoundException("Team with that name doesn't exist")))
                 .build();
     }
 
@@ -28,12 +33,14 @@ public class UserMapper {
         return User.builder()
                 .name(user.getName())
                 .lastname(user.getLastname())
-                .team(teamRepository.findByNameIgnoreCase(user.getTeam()).get())
+                .team(teamRepository.findByNameIgnoreCase(user.getTeam())
+                        .orElseThrow(() -> new EntityNotFoundException("Team with that name doesn't exist")))
                 .build();
     }
 
     public UserResponseDto mapToResponseDto(User user) {
         return UserResponseDto.builder()
+                .id(user.getId())
                 .name(user.getName())
                 .lastname(user.getLastname())
                 .team(user.getTeam().getName())
