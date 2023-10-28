@@ -25,4 +25,10 @@ public class Pair {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public Pair(Long opponentId, Date date, User user) {
+        this.opponentId = opponentId;
+        this.date = date;
+        this.user = user;
+    }
 }
