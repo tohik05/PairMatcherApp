@@ -20,6 +20,6 @@ public class PairService {
     }
 
     public List<Pair> getAllUserPairs(User user) {
-        return repository.findByUser_Id(user.getId());
+        return repository.findPairsByUserId(user.getId());
     }
 }

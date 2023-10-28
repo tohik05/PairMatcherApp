@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface PairRepository extends JpaRepository<Pair, Long> {
-    List<Pair> findByUser_Id(Long id);
+    List<Pair> findPairsByUserId(Long id);
 }
