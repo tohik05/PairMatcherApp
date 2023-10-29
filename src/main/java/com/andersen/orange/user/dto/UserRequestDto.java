@@ -1,6 +1,5 @@
 package com.andersen.orange.user.dto;
 
-import com.andersen.orange.team.model.Team;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

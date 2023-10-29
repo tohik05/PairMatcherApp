@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class TeamServiceImpl implements TeamService{
+public class TeamServiceImpl implements TeamService {
     private final TeamRepository teamRepository;
     private final TeamMapper teamMapper;
 
@@ -21,9 +21,9 @@ public class TeamServiceImpl implements TeamService{
     }
 
     @Override
-    public void create(TeamCreateDto team){
+    public void create(TeamCreateDto team) {
         Optional<Team> existTeam = teamRepository.findByNameIgnoreCase(team.getName());
-        if (existTeam.isPresent()){
+        if (existTeam.isPresent()) {
             throw new TeamHasAlreadyExistException("Team with that name has already exists");
         } else {
             teamRepository.save(teamMapper.mapToEntity(team));

@@ -19,7 +19,7 @@ public class UserMapper {
         this.teamRepository = teamRepository;
     }
 
-    public User mapToEntity(UserRequestDto user){
+    public User mapToEntity(UserRequestDto user) {
         return User.builder()
                 .id(user.getId())
                 .name(user.getName())
@@ -29,7 +29,7 @@ public class UserMapper {
                 .build();
     }
 
-    public User mapToEntity(UserCreateDto user){
+    public User mapToEntity(UserCreateDto user) {
         return User.builder()
                 .name(user.getName())
                 .lastname(user.getLastname())

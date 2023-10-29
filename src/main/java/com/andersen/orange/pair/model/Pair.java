@@ -1,10 +1,21 @@
 package com.andersen.orange.pair.model;
 
 import com.andersen.orange.user.model.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
 import java.util.List;
 
@@ -19,28 +30,18 @@ public class Pair {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "opponent_id")
-    private User opponent;
     @Temporal(TemporalType.DATE)
     @Column(name = "date")
     private Date date;
-    @JsonBackReference
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-//    public Pair(Long opponentId, Date date, User user) {
-//        this.opponentId = opponentId;
-//        this.date = date;
-//        this.user = user;
-//    }
+    @JsonIgnore
+    @ManyToMany(mappedBy = "pairs")
+    private List<User> users;
 
     @Override
     public String toString() {
         return "Pair{" +
-                "user=" + user.getName() + " " + user.getLastname() +
-                ", opponent=" + opponent.getName() + " " + opponent.getLastname() +
-                ", date=" + date +'}';
+                "user=" + users.get(0).getName() + " " + users.get(0).getLastname() +
+                ", opponent=" + users.get(1).getName() + " " + users.get(1).getLastname() +
+                ", date=" + date + '}';
     }
 }

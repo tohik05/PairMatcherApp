@@ -1,5 +1,6 @@
 package com.andersen.orange.pair.dto;
 
+import com.andersen.orange.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -13,6 +14,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 public class PairDto {
 
-    private String mainUser;
-    private String opponentUser;
+    private User mainUser;
+    private User opponentUser;
 }

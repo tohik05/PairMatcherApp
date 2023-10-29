@@ -2,11 +2,24 @@ package com.andersen.orange.user.model;
 
 import com.andersen.orange.pair.model.Pair;
 import com.andersen.orange.team.model.Team;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.*;
-import java.util.ArrayList;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.util.List;
 
 @NoArgsConstructor
@@ -32,7 +45,9 @@ public class User {
     private Team team;
     @Column(name = "is_Deleted")
     private boolean isDeleted;
-    @JsonManagedReference
-    @OneToMany(mappedBy = "user")
+    @ManyToMany
+    @JoinTable(name = "user_pair",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "pair_id"))
     private List<Pair> pairs;
 }
