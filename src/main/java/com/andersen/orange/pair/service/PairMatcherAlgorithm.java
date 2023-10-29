@@ -1,7 +1,12 @@
+/*
 package com.andersen.orange.pair.service;
 
+import com.andersen.orange.pair.dto.PairDto;
 import com.andersen.orange.pair.model.Pair;
+import com.andersen.orange.user.dto.UserRequestDto;
 import com.andersen.orange.user.model.User;
+import com.andersen.orange.user.service.UserMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -9,19 +14,27 @@ import java.util.*;
 @Service
 public class PairMatcherAlgorithm {
     private final PairService pairService;
+    private final UserMapper userMapper;
+    private final PairMapper pairMapper;
 
-    public PairMatcherAlgorithm(PairService service) {
+    @Autowired
+    public PairMatcherAlgorithm(PairService service, UserMapper userMapper, PairMapper pairMapper) {
         this.pairService = service;
+        this.userMapper = userMapper;
+        this.pairMapper = pairMapper;
     }
 
-    public List<Pair> pairMatcher(List<User> users) {
-        List<Pair> pairs = new ArrayList<>();
+    public List<PairDto> pairMatcher(List<UserRequestDto> usersDto) {
+        List<User> users = usersDto.stream().map(userMapper::mapToEntity).toList();
         List<User> sortedUserWithPairs = getUsersPairsAndSort(users);
 
+        List<Pair> pairs = new ArrayList<>();
         for (User user : sortedUserWithPairs) {
             pairs.add(createPair(user, sortedUserWithPairs));
         }
-        return pairs;
+        return pairs.stream()
+                .map(pairMapper::mapToPairDto)
+                .toList();
     }
 
     private Pair createPair(User userForPair, List<User> users) {
@@ -67,9 +80,9 @@ public class PairMatcherAlgorithm {
         for (User user : users) {
             user.setPairs(pairService.getAllUserPairs(user));
         }
-
         return users.stream()
                 .sorted(Comparator.comparingInt(u -> u.getPairs().size()))
                 .toList();
     }
 }
+*/

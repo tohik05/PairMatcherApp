@@ -2,14 +2,17 @@ package com.andersen.orange.user.model;
 
 import com.andersen.orange.pair.model.Pair;
 import com.andersen.orange.team.model.Team;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
+@ToString
 @Getter
 @Setter
 @Builder
@@ -29,6 +32,7 @@ public class User {
     private Team team;
     @Column(name = "is_Deleted")
     private boolean isDeleted;
+    @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private List<Pair> pairs;
 }
