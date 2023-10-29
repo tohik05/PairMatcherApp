@@ -2,8 +2,7 @@ package com.andersen.orange.user.service;
 
 import com.andersen.orange.team.repository.TeamRepository;
 import com.andersen.orange.user.dto.UserCreateDto;
-import com.andersen.orange.user.dto.UserRequestDto;
-import com.andersen.orange.user.dto.UserResponseDto;
+import com.andersen.orange.user.dto.UserDto;
 import com.andersen.orange.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,7 +18,7 @@ public class UserMapper {
         this.teamRepository = teamRepository;
     }
 
-    public User mapToEntity(UserRequestDto user) {
+    public User mapToEntity(UserDto user) {
         return User.builder()
                 .id(user.getId())
                 .name(user.getName())
@@ -38,8 +37,8 @@ public class UserMapper {
                 .build();
     }
 
-    public UserResponseDto mapToResponseDto(User user) {
-        return UserResponseDto.builder()
+    public UserDto mapToDto(User user) {
+        return UserDto.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .lastname(user.getLastname())

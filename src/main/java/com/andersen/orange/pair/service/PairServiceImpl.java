@@ -3,7 +3,7 @@ package com.andersen.orange.pair.service;
 import com.andersen.orange.pair.dto.PairDto;
 import com.andersen.orange.pair.model.Pair;
 import com.andersen.orange.pair.repository.PairRepository;
-import com.andersen.orange.user.dto.UserRequestDto;
+import com.andersen.orange.user.dto.UserDto;
 import com.andersen.orange.user.model.User;
 import com.andersen.orange.user.repository.UserRepository;
 import com.andersen.orange.user.service.UserMapper;
@@ -32,12 +32,12 @@ public class PairServiceImpl implements PairService {
     }
 
     @Override
-    public PairDto createPair(List<UserRequestDto> usersDto) {
+    public PairDto createPair(List<UserDto> usersDto) {
         List<User> users = usersDto.stream().map(userMapper::mapToEntity).toList();
         for (User user : users) {
             user.setPairs(pairRepository.findPairsByUser(user));
         }
-        return pairMapper.mapToPairDto(algorithm.findPair(users));
+        return pairMapper.mapToDto(algorithm.findPair(users));
     }
 
     @Override

@@ -1,8 +1,7 @@
 package com.andersen.orange.user.controller;
 
 import com.andersen.orange.user.dto.UserCreateDto;
-import com.andersen.orange.user.dto.UserRequestDto;
-import com.andersen.orange.user.dto.UserResponseDto;
+import com.andersen.orange.user.dto.UserDto;
 import com.andersen.orange.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,25 +36,25 @@ public class UserController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<UserResponseDto> getAll() {
+    public List<UserDto> getAll() {
         return userService.getAll();
     }
 
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserResponseDto read(@PathVariable(name = "id") long id) {
+    public UserDto read(@PathVariable(name = "id") long id) {
         return userService.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserResponseDto create(@RequestBody UserCreateDto user) {
+    public UserDto create(@RequestBody UserCreateDto user) {
         return userService.create(user);
     }
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public UserResponseDto updateTeam(@RequestBody UserRequestDto user) {
+    public UserDto updateTeam(@RequestBody UserDto user) {
         return userService.update(user);
     }
 

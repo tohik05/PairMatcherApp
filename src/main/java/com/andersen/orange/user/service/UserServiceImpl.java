@@ -1,8 +1,7 @@
 package com.andersen.orange.user.service;
 
 import com.andersen.orange.user.dto.UserCreateDto;
-import com.andersen.orange.user.dto.UserRequestDto;
-import com.andersen.orange.user.dto.UserResponseDto;
+import com.andersen.orange.user.dto.UserDto;
 import com.andersen.orange.user.model.User;
 import com.andersen.orange.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,32 +25,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResponseDto> getAll() {
-        List<UserResponseDto> users = userRepository.findByIsDeletedFalse().stream()
-                .map(userMapper::mapToResponseDto)
+    public List<UserDto> getAll() {
+        List<UserDto> users = userRepository.findByIsDeletedFalse().stream()
+                .map(userMapper::mapToDto)
                 .toList();
         return users.isEmpty() ? new ArrayList<>() : users;
     }
 
     @Override
-    public UserResponseDto getById(Long id) {
-        return userMapper.mapToResponseDto(userRepository.findByIdAndIsDeletedFalse(id).orElseThrow(
+    public UserDto getById(Long id) {
+        return userMapper.mapToDto(userRepository.findByIdAndIsDeletedFalse(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format("User with id '%s' not found", id))));
     }
 
     @Override
-    public UserResponseDto create(UserCreateDto user) {
+    public UserDto create(UserCreateDto user) {
         User newUser = userRepository.save(userMapper.mapToEntity(user));
-        return userMapper.mapToResponseDto(newUser);
+        return userMapper.mapToDto(newUser);
     }
 
     @Override
-    public UserResponseDto update(UserRequestDto user) {
+    public UserDto update(UserDto user) {
         User requestUser = userMapper.mapToEntity(user);
         User userForUpdate = userRepository.findById(requestUser.getId()).orElseThrow(
                 () -> new EntityNotFoundException(String.format("User with id '%s' not found", requestUser.getId())));
         userForUpdate.setTeam(requestUser.getTeam());
-        return userMapper.mapToResponseDto(userRepository.save(userForUpdate));
+        return userMapper.mapToDto(userRepository.save(userForUpdate));
     }
 
     @Transactional

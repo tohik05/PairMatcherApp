@@ -16,7 +16,6 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@ToString
 @Builder
 @Entity
 @Table(name = "teams")

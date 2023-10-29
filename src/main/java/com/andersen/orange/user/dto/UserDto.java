@@ -1,6 +1,5 @@
 package com.andersen.orange.user.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -10,11 +9,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-@Builder
-public class UserResponseDto {
+public class UserDto {
     private Long id;
     private String name;
     private String lastname;

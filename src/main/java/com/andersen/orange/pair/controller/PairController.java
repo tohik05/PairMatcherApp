@@ -2,7 +2,7 @@ package com.andersen.orange.pair.controller;
 
 import com.andersen.orange.pair.dto.PairDto;
 import com.andersen.orange.pair.service.PairService;
-import com.andersen.orange.user.dto.UserRequestDto;
+import com.andersen.orange.user.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -32,7 +32,7 @@ public class PairController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public PairDto getPairs(@RequestBody List<UserRequestDto> users) {
+    public PairDto getPairs(@RequestBody List<UserDto> users) {
         return pairService.createPair(users);
     }
 
