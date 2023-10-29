@@ -22,7 +22,7 @@ public class Algorithm {
     public Pair findPair(List<User> presentUsers) {
         List<User> notInterviewed = interviewedCheck(presentUsers);
         if (notInterviewed.size() <= 1) {
-            throw new NoMorePairException("All the students already answered today");
+            throw new NoMorePairException("All the students have already answered today");
         }
 
         List<User> startUserList = getSortedUsers(presentUsers);
