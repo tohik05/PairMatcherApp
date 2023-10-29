@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TeamMapper {
-    public Team mapToEntity(TeamCreateDto team){
+    public Team mapToEntity(TeamCreateDto team) {
         return Team.builder()
                 .name(team.getName())
                 .build();

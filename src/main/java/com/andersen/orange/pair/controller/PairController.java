@@ -4,18 +4,25 @@ import com.andersen.orange.pair.dto.PairDto;
 import com.andersen.orange.pair.service.PairService;
 import com.andersen.orange.user.dto.UserRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000",
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS},
+        allowedHeaders = "*",
+        maxAge = 3600)
 @RestController
 @RequestMapping("/orange/pairs")
 public class PairController {
-//    private final PairMatcherAlgorithm pairMatchers;
-//
-//    public PairController(PairMatcherAlgorithm pairMatchers) {
-//        this.pairMatchers = pairMatchers;
-//    }
     private final PairService pairService;
 
     @Autowired
@@ -23,17 +30,13 @@ public class PairController {
         this.pairService = pairService;
     }
 
-/*    @GetMapping
-    public List<PairDto> createPairs(@RequestBody List<UserRequestDto> users) {
-       return pairMatchers.pairMatcher(users);
-    }*/
-
     @GetMapping
-    public PairDto createPairs(@RequestBody List<UserRequestDto> users) {
+    public PairDto getPairs(@RequestBody List<UserRequestDto> users) {
         return pairService.createPair(users);
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public void saveMeetingResultInDB(@RequestBody PairDto pairDto) {
         pairService.savePairInDB(pairDto);
     }
