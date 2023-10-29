@@ -31,6 +31,7 @@ public class PairController {
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public PairDto getPairs(@RequestBody List<UserRequestDto> users) {
         return pairService.createPair(users);
     }

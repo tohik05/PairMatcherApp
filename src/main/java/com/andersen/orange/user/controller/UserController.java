@@ -36,11 +36,13 @@ public class UserController {
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<UserResponseDto> getAll() {
         return userService.getAll();
     }
 
     @GetMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public UserResponseDto read(@PathVariable(name = "id") long id) {
         return userService.getById(id);
     }
@@ -52,9 +54,9 @@ public class UserController {
     }
 
     @PutMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateTeam(@RequestBody UserRequestDto user) {
-        userService.update(user);
+    @ResponseStatus(HttpStatus.OK)
+    public UserResponseDto updateTeam(@RequestBody UserRequestDto user) {
+        return userService.update(user);
     }
 
     @DeleteMapping(value = "/{id}")
