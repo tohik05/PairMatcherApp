@@ -30,13 +30,13 @@ public class PairController {
         this.pairService = pairService;
     }
 
-    @GetMapping
+    @PostMapping("/generate")
     @ResponseStatus(HttpStatus.OK)
     public PairDto getPairs(@RequestBody List<UserDto> users) {
         return pairService.createPair(users);
     }
 
-    @PostMapping
+    @PostMapping("/save")
     @ResponseStatus(HttpStatus.CREATED)
     public void saveMeetingResultInDB(@RequestBody PairDto pairDto) {
         pairService.savePairInDB(pairDto);
