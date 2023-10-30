@@ -1,25 +1,25 @@
-package com.andersen.orange.marks.service;
+package com.andersen.orange.mark.service;
 
-import com.andersen.orange.marks.model.Marks;
-import com.andersen.orange.marks.repository.MarksRepository;
+import com.andersen.orange.mark.model.Mark;
+import com.andersen.orange.mark.repository.MarkRepository;
 import com.andersen.orange.pair.model.Pair;
 import com.andersen.orange.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MarksServiceImpl implements MarksService {
+public class MarkServiceImpl implements MarkService {
 
-    private final MarksRepository marksRepository;
+    private final MarkRepository marksRepository;
 
     @Autowired
-    public MarksServiceImpl(MarksRepository marksRepository) {
+    public MarkServiceImpl(MarkRepository marksRepository) {
         this.marksRepository = marksRepository;
     }
 
     @Override
     public void saveMark(User user, Pair pair, Double mark) {
-        marksRepository.save(Marks.builder()
+        marksRepository.save(Mark.builder()
                 .user(user)
                 .pair(pair)
                 .mark(mark)

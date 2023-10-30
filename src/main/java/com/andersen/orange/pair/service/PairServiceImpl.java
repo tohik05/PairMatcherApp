@@ -1,6 +1,6 @@
 package com.andersen.orange.pair.service;
 
-import com.andersen.orange.marks.service.MarksService;
+import com.andersen.orange.mark.service.MarkService;
 import com.andersen.orange.pair.dto.PairRequestDto;
 import com.andersen.orange.pair.dto.PairResponseDto;
 import com.andersen.orange.pair.model.Pair;
@@ -22,17 +22,17 @@ public class PairServiceImpl implements PairService {
     private final PairMapper pairMapper;
     private final Algorithm algorithm;
     private final UserRepository userRepository;
-    private final MarksService marksService;
+    private final MarkService markService;
 
     @Autowired
     public PairServiceImpl(PairRepository repository, UserMapper userMapper, PairMapper pairMapper, Algorithm algorithm,
-                           UserRepository userRepository, MarksService marksService) {
+                           UserRepository userRepository, MarkService markService) {
         this.pairRepository = repository;
         this.userMapper = userMapper;
         this.pairMapper = pairMapper;
         this.algorithm = algorithm;
         this.userRepository = userRepository;
-        this.marksService = marksService;
+        this.markService = markService;
     }
 
     @Override
@@ -58,14 +58,14 @@ public class PairServiceImpl implements PairService {
         mainPairs.add(pair);
         main.setPairs(mainPairs);
         userRepository.save(main);
-        marksService.saveMark(main, pair, pairDto.getMainUser().getMark());
+        markService.saveMark(main, pair, pairDto.getMainUser().getMark());
 
         User opponent = pair.getUsers().get(1);
         List<Pair> opponentPairs = opponent.getPairs();
         opponentPairs.add(pair);
         opponent.setPairs(opponentPairs);
         userRepository.save(opponent);
-        marksService.saveMark(opponent,pair, pairDto.getOpponentUser().getMark());
+        markService.saveMark(opponent,pair, pairDto.getOpponentUser().getMark());
     }
 
 }
