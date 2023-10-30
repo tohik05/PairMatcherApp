@@ -1,7 +1,7 @@
-package com.andersen.orange.pair.model;
+package com.andersen.orange.marks.model;
 
+import com.andersen.orange.pair.model.Pair;
 import com.andersen.orange.user.model.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,28 +12,30 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import java.util.Date;
-import java.util.List;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Getter
 @Entity
-@Table(name = "pairs")
-public class Pair {
+@Table(name = "marks")
+public class Marks {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Temporal(TemporalType.DATE)
-    @Column(name = "date")
-    private Date date;
-    @JsonIgnore
-    @ManyToMany(mappedBy = "pairs")
-    private List<User> users;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "pair_id")
+    private Pair pair;
+
+    @Column(name = "mark")
+    private Double mark;
 }
