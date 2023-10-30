@@ -1,19 +1,13 @@
 package com.andersen.orange.util;
 
 import com.andersen.orange.exception.NoMorePairException;
+import com.andersen.orange.exception.SameTeamException;
 import com.andersen.orange.pair.model.Pair;
 import com.andersen.orange.user.model.User;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Predicate;
 
 @Component
@@ -21,6 +15,9 @@ public class Algorithm {
 
     public Pair findPair(List<User> presentUsers) {
         List<User> notInterviewed = interviewedCheck(presentUsers);
+        if (!checkTeams(notInterviewed)) {
+            throw new SameTeamException("All users are on the same team.");
+        }
         if (notInterviewed.size() <= 1) {
             throw new NoMorePairException("All the students have already answered today");
         }
@@ -102,6 +99,20 @@ public class Algorithm {
             }
         }
         return resultList;
+    }
+
+    private boolean checkTeams(List<User> users) {
+        boolean teamChecker = true;
+        Set<String> teamSet = new HashSet<>();
+
+        for (User user : users) {
+            teamSet.add(user.getTeam().getName());
+        }
+
+        if (teamSet.size() < 2) {
+            teamChecker = false;
+        }
+        return teamChecker;
     }
 }
 
