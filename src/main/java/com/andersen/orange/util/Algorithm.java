@@ -16,7 +16,7 @@ public class Algorithm {
     public Pair findPair(List<User> presentUsers) {
         List<User> notInterviewed = interviewedCheck(presentUsers);
         if (!checkTeams(notInterviewed)) {
-            throw new SameTeamException("All users are on the same team.");
+            throw new SameTeamException("Of the students who did not respond, all are from the same team.");
         }
         if (notInterviewed.size() <= 1) {
             throw new NoMorePairException("All the students have already answered today");
@@ -102,17 +102,11 @@ public class Algorithm {
     }
 
     private boolean checkTeams(List<User> users) {
-        boolean teamChecker = true;
-        Set<String> teamSet = new HashSet<>();
-
-        for (User user : users) {
-            teamSet.add(user.getTeam().getName());
-        }
-
-        if (teamSet.size() < 2) {
-            teamChecker = false;
-        }
-        return teamChecker;
+        long result = users.stream()
+                .map(User::getTeam)
+                .distinct()
+                .count();
+        return result > 1;
     }
 }
 
