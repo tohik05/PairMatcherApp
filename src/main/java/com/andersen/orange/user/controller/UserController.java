@@ -52,9 +52,9 @@ public class UserController {
         return userService.create(user);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDto updateTeam(@RequestBody UserDto user) {
+    public UserDto updateTeam(@RequestBody @PathVariable(name = "id") UserDto user) {
         return userService.update(user);
     }
 
