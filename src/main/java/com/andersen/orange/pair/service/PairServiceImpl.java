@@ -1,5 +1,6 @@
 package com.andersen.orange.pair.service;
 
+import com.andersen.orange.exception.RepeatCouplePerformanceException;
 import com.andersen.orange.mark.service.MarkService;
 import com.andersen.orange.pair.dto.PairRequestDto;
 import com.andersen.orange.pair.dto.PairResponseDto;
@@ -13,7 +14,10 @@ import com.andersen.orange.util.Algorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PairServiceImpl implements PairService {
@@ -50,22 +54,44 @@ public class PairServiceImpl implements PairService {
     }
 
     private void savePair(PairRequestDto pairDto) {
-        Pair pair = pairMapper.mapToEntity(pairDto);
-        pairRepository.save(pair);
+        if (hasUserRecordToday(pairDto)) {
+            Pair pair = pairMapper.mapToEntity(pairDto);
 
-        User main = pair.getUsers().get(0);
-        List<Pair> mainPairs = main.getPairs();
-        mainPairs.add(pair);
-        main.setPairs(mainPairs);
-        userRepository.save(main);
-        markService.saveMark(main, pair, pairDto.getMainUser().getMark());
+            pairRepository.save(pair);
 
-        User opponent = pair.getUsers().get(1);
-        List<Pair> opponentPairs = opponent.getPairs();
-        opponentPairs.add(pair);
-        opponent.setPairs(opponentPairs);
-        userRepository.save(opponent);
-        markService.saveMark(opponent,pair, pairDto.getOpponentUser().getMark());
+            User main = pair.getUsers().get(0);
+            List<Pair> mainPairs = main.getPairs();
+            mainPairs.add(pair);
+            main.setPairs(mainPairs);
+            userRepository.save(main);
+            markService.saveMark(main, pair, pairDto.getMainUser().getMark());
+
+            User opponent = pair.getUsers().get(1);
+            List<Pair> opponentPairs = opponent.getPairs();
+            opponentPairs.add(pair);
+            opponent.setPairs(opponentPairs);
+            userRepository.save(opponent);
+            markService.saveMark(opponent, pair, pairDto.getOpponentUser().getMark());
+        }
     }
 
+    private boolean hasUserRecordToday(PairRequestDto pairDto) {
+        Optional<User> user = userRepository.findById(pairDto.getMainUser().getId());
+        if (user.isPresent()) {
+            User checkUser = user.get();
+            checkUser.setPairs(pairRepository.findPairsByUser(checkUser));
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String date = sdf.format(new Date());
+
+            List<Pair> userPairsToday = checkUser.getPairs().stream()
+                    .filter(pair -> pair.getDate().toString().equals(date))
+                    .toList();
+
+            if (userPairsToday.size() > 0) {
+                throw new RepeatCouplePerformanceException("This couple performed today");
+            }
+        }
+        return true;
+    }
 }

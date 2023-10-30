@@ -43,4 +43,12 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.CONFLICT)
                 .body(errorResponse);
     }
+
+    @ExceptionHandler(RepeatCouplePerformanceException.class)
+    public ResponseEntity<ErrorResponse> repeatPerfomanceHandler(RepeatCouplePerformanceException exception) {
+        final ErrorResponse errorResponse = new ErrorResponse(exception.getMessage(), LocalDateTime.now());
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(errorResponse);
+    }
 }
