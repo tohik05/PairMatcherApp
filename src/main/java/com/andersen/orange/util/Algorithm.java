@@ -25,7 +25,7 @@ public class Algorithm {
             throw new NoMorePairException("All the students have already answered today");
         }
 
-        List<User> startUserList = getSortedUsers(presentUsers);
+        List<User> startUserList = getSortedUsers(notInterviewed);
 
         int lowerPriorityUser = startUserList.get(0).getPairs().size();
         List<User> samePriorityStartList = findMinValueFromList(lowerPriorityUser, startUserList);
