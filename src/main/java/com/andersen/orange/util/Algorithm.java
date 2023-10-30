@@ -7,46 +7,55 @@ import com.andersen.orange.user.model.User;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.function.Predicate;
 
 @Component
 public class Algorithm {
 
     public Pair findPair(List<User> presentUsers) {
-        List<User> notInterviewed = interviewedCheck(presentUsers);
-        if (!checkTeams(notInterviewed)) {
-            throw new SameTeamException("All users are on the same team.");
+        List<User> notInterviewedToday = interviewedCheck(presentUsers);
+        if (!checkTeams(notInterviewedToday)) {
+            throw new SameTeamException("Remaining students from the same team");
         }
-        if (notInterviewed.size() <= 1) {
-            throw new NoMorePairException("All the students have already answered today");
+        if (notInterviewedToday.size() <= 1) {
+            throw new NoMorePairException("All students pair have already created for today");
         }
 
-        List<User> startUserList = getSortedUsers(notInterviewed);
+        List<User> startUserList = getSortedUsers(notInterviewedToday);
 
-        int lowerPriorityUser = startUserList.get(0).getPairs().size();
-        List<User> samePriorityStartList = findMinValueFromList(lowerPriorityUser, startUserList);
+        User mainUser = getMainUser(startUserList);
 
-        Random random = new Random();
-        User mainUser = startUserList.get(random.nextInt(samePriorityStartList.size()));
-
-        List<User> opponentList = startUserList.stream()
-                .filter(Predicate.not(user -> user.getTeam().equals(mainUser.getTeam())))
-                .sorted(Comparator.comparingInt(user -> user.getPairs().size()))
-                .toList();
+        List<User> opponentList = getOpponentList(startUserList, mainUser);
 
         Map<User, Integer> opponentPriorityMap = createOpponentPriorityMap(mainUser, opponentList);
 
-        int minValue = Collections.min(opponentPriorityMap.values());
-        List<User> priorityUsers = findMinValueFromMap(minValue, opponentPriorityMap);
+        User opponentUser = getOpponentUser(opponentPriorityMap);
 
-        User opponentUser = priorityUsers.get(random.nextInt(priorityUsers.size()));
+        return createPair(mainUser, opponentUser);
+    }
+
+    private static Pair createPair(User mainUser, User opponentUser) {
         List<User> pair = new ArrayList<>();
         pair.add(mainUser);
         pair.add(opponentUser);
         return Pair.builder()
                 .users(pair)
                 .build();
+    }
+
+    private static List<User> getOpponentList(List<User> startUserList, User mainUser) {
+        return startUserList.stream()
+                .filter(Predicate.not(user -> user.getTeam().equals(mainUser.getTeam())))
+                .sorted(Comparator.comparingInt(user -> user.getPairs().size()))
+                .toList();
     }
 
     private List<User> getSortedUsers(List<User> presentUsers) {
@@ -81,6 +90,14 @@ public class Algorithm {
                 .toList();
     }
 
+    private User getMainUser(List<User> startUserList) {
+        Random random = new Random();
+        int lowerPriorityUser = startUserList.get(0).getPairs().size();
+        List<User> samePriorityStartList = findMinValueFromList(lowerPriorityUser, startUserList);
+
+        return startUserList.get(random.nextInt(samePriorityStartList.size()));
+    }
+
     private List<User> findMinValueFromList(int minValue, List<User> starterList) {
         List<User> resultList = new ArrayList<>();
         for (User user : starterList) {
@@ -89,6 +106,14 @@ public class Algorithm {
             }
         }
         return resultList;
+    }
+
+    private User getOpponentUser(Map<User, Integer> opponentPriorityMap) {
+        Random random = new Random();
+        int minValue = Collections.min(opponentPriorityMap.values());
+        List<User> priorityUsers = findMinValueFromMap(minValue, opponentPriorityMap);
+
+        return priorityUsers.get(random.nextInt(priorityUsers.size()));
     }
 
     private List<User> findMinValueFromMap(int minValue, Map<User, Integer> map) {
@@ -102,17 +127,10 @@ public class Algorithm {
     }
 
     private boolean checkTeams(List<User> users) {
-        boolean teamChecker = true;
-        Set<String> teamSet = new HashSet<>();
-
-        for (User user : users) {
-            teamSet.add(user.getTeam().getName());
-        }
-
-        if (teamSet.size() < 2) {
-            teamChecker = false;
-        }
-        return teamChecker;
+        return users.stream()
+                .map(User::getTeam)
+                .distinct()
+                .count() > 1;
     }
 }
 
