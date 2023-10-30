@@ -1,12 +1,12 @@
 package com.andersen.orange.pair.controller;
 
-import com.andersen.orange.pair.dto.PairDto;
+import com.andersen.orange.pair.dto.PairRequestDto;
+import com.andersen.orange.pair.dto.PairResponseDto;
 import com.andersen.orange.pair.service.PairService;
 import com.andersen.orange.user.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,13 +32,13 @@ public class PairController {
 
     @PostMapping("/generate")
     @ResponseStatus(HttpStatus.OK)
-    public PairDto getPairs(@RequestBody List<UserDto> users) {
+    public PairResponseDto getPairs(@RequestBody List<UserDto> users) {
         return pairService.createPair(users);
     }
 
     @PostMapping("/save")
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveMeetingResultInDB(@RequestBody PairDto pairDto) {
+    public void saveMeetingResultInDB(@RequestBody PairRequestDto pairDto) {
         pairService.savePairInDB(pairDto);
     }
 }

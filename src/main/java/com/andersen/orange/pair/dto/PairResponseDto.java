@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class PairDto {
+public class PairResponseDto {
 
     private UserDto mainUser;
     private UserDto opponentUser;
