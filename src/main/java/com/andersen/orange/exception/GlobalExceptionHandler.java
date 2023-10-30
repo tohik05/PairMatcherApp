@@ -35,4 +35,12 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.CONFLICT)
                 .body(errorResponse);
     }
+
+    @ExceptionHandler(SameTeamException.class)
+    public ResponseEntity<ErrorResponse> allUsersFromSameTeamHandler(SameTeamException exception) {
+        final ErrorResponse errorResponse = new ErrorResponse(exception.getMessage(), LocalDateTime.now());
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(errorResponse);
+    }
 }
