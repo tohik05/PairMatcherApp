@@ -1,6 +1,7 @@
 package com.andersen.orange.pair.service;
 
-import com.andersen.orange.pair.dto.PairDto;
+import com.andersen.orange.pair.dto.PairRequestDto;
+import com.andersen.orange.pair.dto.PairResponseDto;
 import com.andersen.orange.pair.model.Pair;
 import com.andersen.orange.pair.repository.PairRepository;
 import com.andersen.orange.user.dto.UserDto;
@@ -32,7 +33,7 @@ public class PairServiceImpl implements PairService {
     }
 
     @Override
-    public PairDto createPair(List<UserDto> usersDto) {
+    public PairResponseDto createPair(List<UserDto> usersDto) {
         List<User> users = usersDto.stream().map(userMapper::mapToEntity).toList();
         for (User user : users) {
             user.setPairs(pairRepository.findPairsByUser(user));
@@ -41,23 +42,28 @@ public class PairServiceImpl implements PairService {
     }
 
     @Override
-    public void savePairInDB(PairDto pairDto) {
-        savePair(pairMapper.mapToEntity(pairDto));
+    public void savePairInDB(PairRequestDto pairDto) {
+        savePair(pairDto);
     }
 
-    private void savePair(Pair pair) {
-        Pair saved = pairRepository.save(pair);
+    private void savePair(PairRequestDto pairDto) {
+        Pair pair = pairMapper.mapToEntity(pairDto);
+        pairRepository.save(pair);
 
-        User main = saved.getUsers().get(0);
+        User main = pair.getUsers().get(0);
         List<Pair> mainPairs = main.getPairs();
-        mainPairs.add(saved);
+        mainPairs.add(pair);
         main.setPairs(mainPairs);
         userRepository.save(main);
 
-        User opponent = saved.getUsers().get(1);
+        User opponent = pair.getUsers().get(1);
         List<Pair> opponentPairs = opponent.getPairs();
-        opponentPairs.add(saved);
+        opponentPairs.add(pair);
         opponent.setPairs(opponentPairs);
         userRepository.save(opponent);
+
+        pairRepository.insertUserPairMark(main.getId(), pair.getId(), pairDto.getMainUser().getMark());
+        pairRepository.insertUserPairMark(opponent.getId(), pair.getId(), pairDto.getOpponentUser().getMark());
     }
+
 }
