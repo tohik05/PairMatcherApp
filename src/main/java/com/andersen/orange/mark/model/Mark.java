@@ -1,4 +1,4 @@
-package com.andersen.orange.marks.model;
+package com.andersen.orange.mark.model;
 
 import com.andersen.orange.pair.model.Pair;
 import com.andersen.orange.user.model.User;
@@ -22,7 +22,7 @@ import javax.persistence.Table;
 @Getter
 @Entity
 @Table(name = "marks")
-public class Marks {
+public class Mark {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
