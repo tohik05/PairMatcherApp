@@ -1,5 +1,7 @@
 package com.andersen.orange.user.model;
 
+import com.andersen.orange.mark.model.IndividualMark;
+import com.andersen.orange.mark.model.Mark;
 import com.andersen.orange.pair.model.Pair;
 import com.andersen.orange.team.model.Team;
 import lombok.AllArgsConstructor;
@@ -18,6 +20,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
 
@@ -48,4 +51,8 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "pair_id"))
     private List<Pair> pairs;
+    @OneToMany(mappedBy = "user")
+    private List<Mark> marks;
+    @OneToMany(mappedBy = "user")
+    private List<IndividualMark> individualMarks;
 }

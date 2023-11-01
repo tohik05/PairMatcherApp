@@ -1,4 +1,4 @@
-package com.andersen.orange.user.dto;
+package com.andersen.orange.mark.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,8 +15,10 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class UserWithResultDto {
+public class IndividualMarkDto {
     private Long id;
+    @NotNull(message = "Date must be present")
+    private String date;
     @NotNull(message = "Mark must be present")
     private Double mark;
 }

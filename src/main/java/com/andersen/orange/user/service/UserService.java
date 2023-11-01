@@ -2,6 +2,7 @@ package com.andersen.orange.user.service;
 
 import com.andersen.orange.user.dto.UserCreateDto;
 import com.andersen.orange.user.dto.UserDto;
+import com.andersen.orange.user.dto.UserMarksDto;
 
 import java.util.List;
 
@@ -16,4 +17,6 @@ public interface UserService {
     UserDto update(UserDto user);
 
     void softDeleteById(Long id);
+
+    UserMarksDto getAllMarks(Long userId);
 }

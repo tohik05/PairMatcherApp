@@ -16,17 +16,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Component
 public class Algorithm {
 
     public Pair findPair(List<User> presentUsers) {
         List<User> notInterviewedToday = interviewedCheck(presentUsers);
-        if (!checkTeams(notInterviewedToday)) {
-            throw new SameTeamException("Remaining students from the same team");
-        }
         if (notInterviewedToday.size() <= 1) {
             throw new NoMorePairException("All students pair have already created for today");
+        }
+        if (!checkTeams(notInterviewedToday)) {
+            throw new SameTeamException("Remaining students from the same team");
         }
 
         List<User> startUserList = getSortedUsers(notInterviewedToday);
@@ -35,7 +36,7 @@ public class Algorithm {
 
         List<User> opponentList = getOpponentList(startUserList, mainUser);
 
-        Map<User, Integer> opponentPriorityMap = createOpponentPriorityMap(mainUser, opponentList);
+        Map<User, Long> opponentPriorityMap = createOpponentPriorityMap(mainUser, opponentList);
 
         User opponentUser = getOpponentUser(opponentPriorityMap);
 
@@ -64,21 +65,14 @@ public class Algorithm {
                 .toList();
     }
 
-    private Map<User, Integer> createOpponentPriorityMap(User firstUser, List<User> OpponentList) {
-        Map<User, Integer> opponentMeetingsCount = new HashMap<>();
-        for (User opponent : OpponentList) {
-            int count = 0;
-            for (Pair userPair : firstUser.getPairs()) {
-                for (User user : userPair.getUsers()) {
-                    if (opponent.equals(user)) {
-                        count++;
-                        break;
-                    }
-                }
-            }
-            opponentMeetingsCount.put(opponent, count);
-        }
-        return opponentMeetingsCount;
+    private Map<User, Long> createOpponentPriorityMap(User firstUser, List<User> opponentList) {
+        return opponentList.stream()
+                .collect(Collectors.toMap(
+                        opponent -> opponent,
+                        meetings -> firstUser.getPairs().stream()
+                                .flatMap(pair -> pair.getUsers().stream())
+                                        .filter(user -> user.equals(meetings))
+                                        .count()));
     }
 
     private List<User> interviewedCheck(List<User> presentUsers) {
@@ -108,17 +102,17 @@ public class Algorithm {
         return resultList;
     }
 
-    private User getOpponentUser(Map<User, Integer> opponentPriorityMap) {
+    private User getOpponentUser(Map<User, Long> opponentPriorityMap) {
         Random random = new Random();
-        int minValue = Collections.min(opponentPriorityMap.values());
+        long minValue = Collections.min(opponentPriorityMap.values());
         List<User> priorityUsers = findMinValueFromMap(minValue, opponentPriorityMap);
 
         return priorityUsers.get(random.nextInt(priorityUsers.size()));
     }
 
-    private List<User> findMinValueFromMap(int minValue, Map<User, Integer> map) {
+    private List<User> findMinValueFromMap(long minValue, Map<User, Long> map) {
         List<User> resultList = new ArrayList<>();
-        for (Map.Entry<User, Integer> userMap : map.entrySet()) {
+        for (Map.Entry<User, Long> userMap : map.entrySet()) {
             if (minValue == userMap.getValue()) {
                 resultList.add(userMap.getKey());
             }

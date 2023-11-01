@@ -7,7 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -15,8 +16,10 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class UserWithResultDto {
+public class UserMarksDto {
     private Long id;
-    @NotNull(message = "Mark must be present")
-    private Double mark;
+    private String name;
+    private String lastname;
+    private String team;
+    private Map<String, List<Double>> marksByDate;
 }

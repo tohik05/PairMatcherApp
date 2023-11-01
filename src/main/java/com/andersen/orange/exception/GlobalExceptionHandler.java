@@ -51,4 +51,12 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.CONFLICT)
                 .body(errorResponse);
     }
+
+    @ExceptionHandler(DateFormatException.class)
+    public ResponseEntity<ErrorResponse> DateFormatExceptionHandler(DateFormatException exception) {
+        final ErrorResponse errorResponse = new ErrorResponse(exception.getMessage(), LocalDateTime.now());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errorResponse);
+    }
 }
