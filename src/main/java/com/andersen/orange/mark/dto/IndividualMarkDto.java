@@ -16,7 +16,6 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class IndividualMarkDto {
-    private Long id;
     @NotNull(message = "Date must be present")
     private String date;
     @NotNull(message = "Mark must be present")
