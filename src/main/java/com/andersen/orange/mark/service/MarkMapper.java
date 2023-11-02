@@ -22,9 +22,9 @@ public class MarkMapper {
         this.userRepository = userRepository;
     }
 
-    public IndividualMark mapToEntity(IndividualMarkDto individualMarkDto) {
-        User user = userRepository.findById(individualMarkDto.getId()).orElseThrow(
-                () -> new EntityNotFoundException(String.format("User with id '%s' not found", individualMarkDto.getId())));
+    public IndividualMark mapToEntity(Long userId, IndividualMarkDto individualMarkDto) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new EntityNotFoundException(String.format("User with id '%s' not found", userId)));
         String dateString = individualMarkDto.getDate();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date;
@@ -42,7 +42,6 @@ public class MarkMapper {
 
     public IndividualMarkDto mapToDto(IndividualMark individualMark) {
         return IndividualMarkDto.builder()
-                .id(individualMark.getId())
                 .date(individualMark.getMarkDate().toString())
                 .mark(individualMark.getIndividualMark())
                 .build();

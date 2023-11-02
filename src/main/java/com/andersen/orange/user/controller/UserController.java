@@ -65,8 +65,9 @@ public class UserController {
 
     @PostMapping("/{id}/individualMark")
     @ResponseStatus(HttpStatus.CREATED)
-    public IndividualMarkDto addIndividualMark(@RequestBody IndividualMarkDto individualMarkDto) {
-        return individualMarkService.addIndividualMark(individualMarkDto);
+    public IndividualMarkDto addIndividualMark(@PathVariable(name = "id") Long id,
+                                               @RequestBody IndividualMarkDto individualMarkDto) {
+        return individualMarkService.addIndividualMark(id, individualMarkDto);
     }
 
     @PutMapping("/{id}")

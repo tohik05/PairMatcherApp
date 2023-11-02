@@ -18,8 +18,8 @@ public class IndividualMarkServiceImpl implements IndividualMarkService {
     }
 
     @Override
-    public IndividualMarkDto addIndividualMark(IndividualMarkDto individualMarkDto) {
-        IndividualMark saved = individualMarkRepository.save(markMapper.mapToEntity(individualMarkDto));
+    public IndividualMarkDto addIndividualMark(Long userId, IndividualMarkDto individualMarkDto) {
+        IndividualMark saved = individualMarkRepository.save(markMapper.mapToEntity(userId, individualMarkDto));
         return markMapper.mapToDto(saved);
     }
 }
